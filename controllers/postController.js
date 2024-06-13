@@ -135,6 +135,10 @@ exports.deletePost = async (req, res) => {
     try {
         const { id } = req.params;
         await Post.findByIdAndDelete(id);
+
+        await Like.deleteMany({ post: id })
+        await Comment.deleteMany({ post: id })
+
         res.status(200).json({
             success: true,
             data: "post deleted successfully"
